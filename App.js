@@ -1,10 +1,11 @@
-import { View, StyleSheet, Text, Button } from 'react-native';
-
 import { NavigationContainer } from '@react-navigation/native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+
+import {firebaseConfig} from './firebase';
+import * as firebase from 'firebase';
 
 import LoginScreen from './Screens/LoginScreen';
 import HomeScreen from './Screens/HomeScreen';
@@ -14,11 +15,17 @@ import DimerScreen from './Screens/DimerScreen';
 
 const Tab = createBottomTabNavigator();
 
+try {
+  firebase.initializeApp(firebaseConfig);
+} catch (e) {
+  console.log('App em carregamento');
+}
+
 export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        tabBarOptions={{
+        screenOptions={{
           activeTintColor: 'black',
           inactiveTintColor: 'grey',
         }}>
@@ -28,12 +35,15 @@ export default function App() {
           options={{
             tabBarStyle: { display: 'none' },
             headerShown: false,
+            tabBarButton: () => null,
+            tabBarVisible: false,
           }}
         />
         <Tab.Screen
           name="Home"
           component={HomeScreen}
           options={{
+            headerShown: false,
             tabBarLabel: 'Home',
             tabBarIcon: ({ color, size }) => (
               <FontAwesome name="home" size={size} color={color} />
