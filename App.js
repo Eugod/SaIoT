@@ -1,10 +1,14 @@
+import { useEffect } from 'react';
+
+import { BackHandler } from 'react-native';
+
 import { NavigationContainer } from '@react-navigation/native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-import {firebaseConfig} from './firebase';
+import { firebaseConfig } from './firebase';
 import * as firebase from 'firebase';
 
 import LoginScreen from './Screens/LoginScreen';
@@ -22,6 +26,12 @@ try {
 }
 
 export default function App() {
+  useEffect(() => {
+    BackHandler.addEventListener('backPress', () => true);
+
+    return () => BackHandler.removeEventListener('backPress', () => true);
+  }, [])
+
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -39,6 +49,7 @@ export default function App() {
             tabBarVisible: false,
           }}
         />
+
         <Tab.Screen
           name="Home"
           component={HomeScreen}
@@ -50,6 +61,7 @@ export default function App() {
             ),
           }}
         />
+
         <Tab.Screen
           name="Esteira"
           component={EsteiraScreen}
@@ -58,6 +70,7 @@ export default function App() {
             tabBarVisible: false,
           }}
         />
+
         <Tab.Screen
           name="Ar Condicionado"
           component={ArCondicionadoScreen}
@@ -66,6 +79,7 @@ export default function App() {
             tabBarVisible: false,
           }}
         />
+        
         <Tab.Screen
           name="Dimer"
           component={DimerScreen}
