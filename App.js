@@ -63,15 +63,6 @@ export default function App() {
         />
 
         <Tab.Screen
-          name="Esteira"
-          component={EsteiraScreen}
-          options={{
-            tabBarButton: () => null,
-            tabBarVisible: false,
-          }}
-        />
-
-        <Tab.Screen
           name="Ar Condicionado"
           component={ArCondicionadoScreen}
           options={{
@@ -79,10 +70,19 @@ export default function App() {
             tabBarVisible: false,
           }}
         />
-        
+
         <Tab.Screen
           name="Dimer"
           component={DimerScreen}
+          options={{
+            tabBarButton: () => null,
+            tabBarVisible: false,
+          }}
+        />
+
+        <Tab.Screen
+          name="Esteira"
+          component={EsteiraScreen}
           options={{
             tabBarButton: () => null,
             tabBarVisible: false,

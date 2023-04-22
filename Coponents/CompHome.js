@@ -1,10 +1,7 @@
 import {
-  SafeAreaView,
   View,
   StyleSheet,
   Text,
-  TextInput,
-  StatusBar,
   Image,
   TouchableOpacity,
 } from 'react-native';

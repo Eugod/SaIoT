@@ -2,14 +2,11 @@ import { useEffect, useState } from 'react';
 
 import {
   SafeAreaView,
-  View,
   StyleSheet,
   Text,
   StatusBar,
   FlatList,
 } from 'react-native';
-
-import { useNavigation } from '@react-navigation/native';
 
 import { CompHome } from '../Coponents/CompHome';
 
