@@ -35,9 +35,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        tabBarOptions={{
-          activeTintColor: 'black',
-          inactiveTintColor: 'grey',
+        screenOptions={{
+          tabBarActiveTintColor: 'black',
+          tabBarInactiveTintColor: 'grey',
         }}>
         <Tab.Screen
           name="Login"
