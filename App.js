@@ -26,11 +26,13 @@ try {
 }
 
 export default function App() {
+  /*
   useEffect(() => {
     BackHandler.addEventListener('backPress', () => true);
 
     return () => BackHandler.removeEventListener('backPress', () => true);
   }, [])
+  */
 
   return (
     <NavigationContainer>

@@ -8,11 +8,11 @@ import {
 
 import { useNavigation } from '@react-navigation/native';
 
-export function CompHome({ img, titulo, descricao, nome }) {
+export function CompHome({ img, titulo, descricao }) {
   const navigation = useNavigation();
 
   navegacao = () => {
-    navigation.navigate(nome);
+    navigation.navigate(titulo);
   }
 
   return (

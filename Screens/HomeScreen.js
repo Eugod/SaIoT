@@ -44,7 +44,6 @@ export default function HomeScreen() {
             img={item.img}
             titulo={item.titulo}
             descricao={item.descricao}
-            nome={item.nome}
           />
         )}
       />
