@@ -31,7 +31,7 @@ export default function ArCondicionadoScreen() {
           informacao.push(info.val());
         });
 
-        setTemperaturaArCondicionado(informacao[0].temperatura)
+        setTemperaturaArCondicionado(informacao[0].temperatura);
         setTemperaturaAmbiente(informacao[0].temperaturaAmbiente);
         setConsumo(informacao[0].consumo);
         setFlagLigaDesliga(informacao[0].ligadoDesligado);

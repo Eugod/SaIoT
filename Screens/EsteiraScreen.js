@@ -1,27 +1,78 @@
+import { useEffect, useState } from 'react';
+
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-import { Feather, FontAwesome } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
+
+import * as firebase from 'firebase';
 
 export default function EsteiraScreen() {
+  const [consumo, setConsumo] = useState();
+
+  const [horasDeUsoDiario, setHorasDeUsoDiario] = useState();
+  const [minutosDeUsoDiario, setMinutosDeUsoDiario] = useState();
+
+  const [horasDeUsoTotal, setHorasDeUsoTotal] = useState();
+  const [minutosDeUsoTotal, setMinutosDeUsoTotal] = useState();
+
+  const [flagLigaDesliga, setFlagLigaDesliga] = useState();
+
+  const infosEsteiraRef = firebase.database().ref('ControleDeDados/esteira/');
+
+  useEffect(() => {
+    carregarInfo();
+  }, []);
+
+  const carregarInfo = () => {
+    firebase
+      .database()
+      .ref('ControleDeDados/')
+      .on('value', (snapshot) => {
+        const informacao = [];
+        snapshot.forEach((info) => {
+          informacao.push(info.val());
+        });
+
+        setConsumo(informacao[1].consumo);
+        setHorasDeUsoDiario(informacao[1].horasDeUsoDiario);
+        setMinutosDeUsoDiario(informacao[1].minutosDeUsoDiario);
+        setHorasDeUsoTotal(informacao[1].horasDeUsoTotal);
+        setMinutosDeUsoTotal(informacao[1].minutosDeUsoTotal);
+        setFlagLigaDesliga(informacao[1].ligadoDesligado);
+
+        formataValor(informacao[1].horasDeUsoDiario, setHorasDeUsoDiario);
+        formataValor(informacao[1].minutosDeUsoDiario, setMinutosDeUsoDiario);
+        formataValor(informacao[1].horasDeUsoTotal, setHorasDeUsoTotal);
+        formataValor(informacao[1].minutosDeUsoTotal, setMinutosDeUsoTotal);
+      });
+  };
+
+  function formataValor(valor, setValor) {
+    console.log(valor)
+    if (valor < 10) {
+      setValor(`0${valor}`)
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.viewInfos}>
         <View style={styles.viewConsumo}>
           <Text style={styles.txtInfos}>Consumo:</Text>
 
-          <Text style={styles.valInfos}>30 W</Text>
+          <Text style={styles.valInfos}>{consumo} W</Text>
         </View>
 
         <View style={styles.viewUsoDiario}>
           <Text style={styles.txtInfos}>Tempo de uso diário:</Text>
 
-          <Text style={styles.valInfos}>05:30 hrs</Text>
+          <Text style={styles.valInfos}>{horasDeUsoDiario}:{minutosDeUsoDiario} hrs</Text>
         </View>
 
         <View style={styles.viewUsoTotal}>
           <Text style={styles.txtInfos}>Tempo de uso total:</Text>
 
-          <Text style={styles.valInfos}>30:55 hrs</Text>
+          <Text style={styles.valInfos}>{horasDeUsoTotal}:{minutosDeUsoTotal} hrs</Text>
         </View>
       </View>
 
@@ -93,7 +144,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 10,
-    marginTop: '20%',
+    marginTop: '25%',
     marginBottom: '20%',
     width: '100%'
   },
@@ -103,7 +154,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 8,
     alignItems: 'center',
-    width:'35%',
+    width: '35%',
     backgroundColor: 'red',
     borderColor: 'red'
   },
