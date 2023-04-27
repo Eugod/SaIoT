@@ -2,19 +2,19 @@ import { useEffect, useState } from 'react';
 
 import { View, StyleSheet, Text, TouchableOpacity, } from 'react-native';
 
-import { Feather, FontAwesome } from '@expo/vector-icons'; 
+import { Feather, FontAwesome } from '@expo/vector-icons';
 
 import * as firebase from 'firebase';
 
 export default function ArCondicionadoScreen() {
   const [consumo, setConsumo] = useState();
-  
+
   const [temperaturaAmbiente, setTemperaturaAmbiente] = useState();
-  
+
   const [temperaturaArCondicionado, setTemperaturaArCondicionado] = useState();
-  
+
   const [flagLigaDesliga, setFlagLigaDesliga] = useState();
-  
+
   const infosArCondicionadoRef = firebase.database().ref('ControleDeDados/arCondicionado/');
 
   useEffect(() => {
@@ -39,27 +39,27 @@ export default function ArCondicionadoScreen() {
   };
 
   const aumentaTemperatura = () => {
-    if(temperaturaArCondicionado < 26) {
-      infosArCondicionadoRef.update({'temperatura': temperaturaArCondicionado + 1});
+    if (temperaturaArCondicionado < 26) {
+      infosArCondicionadoRef.update({ 'temperatura': temperaturaArCondicionado + 1 });
     }
   }
 
   const diminuiTemperatura = () => {
-    if(temperaturaArCondicionado > 16) {
-      infosArCondicionadoRef.update({'temperatura': temperaturaArCondicionado - 1});
+    if (temperaturaArCondicionado > 16) {
+      infosArCondicionadoRef.update({ 'temperatura': temperaturaArCondicionado - 1 });
     }
   }
-  
+
   const ligaDesliga = () => {
-    if(flagLigaDesliga == 0) {
+    if (flagLigaDesliga == 0) {
       console.log('Ligado!');
-      infosArCondicionadoRef.update({'ligadoDesligado': 1});
+      infosArCondicionadoRef.update({ 'ligadoDesligado': 1 });
     } else {
       console.log('Desligado!');
-      infosArCondicionadoRef.update({'ligadoDesligado': 0});
+      infosArCondicionadoRef.update({ 'ligadoDesligado': 0 });
     }
   }
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.viewInfos}>
@@ -82,15 +82,15 @@ export default function ArCondicionadoScreen() {
 
       <View style={styles.viewBotoes}>
         <TouchableOpacity onPress={aumentaTemperatura}>
-        <FontAwesome name="arrow-circle-up" size={50} color={'black'} />
+          <FontAwesome name="arrow-circle-up" size={50} color={'black'} />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={diminuiTemperatura}>
-        <FontAwesome name="arrow-circle-down" size={50} color={'black'} />
+          <FontAwesome name="arrow-circle-down" size={50} color={'black'} />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={ligaDesliga}>
-        <Feather name="power" size={50} color={'black'} />
+          <Feather name="power" size={50} color={'black'} />
         </TouchableOpacity>
       </View>
     </View>
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
 
   viewBotoes: {
     flex: 1,
-    alignItems:'center',
+    alignItems: 'center',
     justifyContent: 'space-between',
     padding: 10,
     marginTop: '20%',
