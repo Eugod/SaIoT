@@ -11,9 +11,9 @@ export default function ArCondicionadoScreen() {
   
   const [temperaturaAmbiente, setTemperaturaAmbiente] = useState();
   
-  const [temperaturaArCondicionado, setTemperaturaArCondicionado] = useState(21);
+  const [temperaturaArCondicionado, setTemperaturaArCondicionado] = useState();
   
-  let [flagLigaDesliga, setFlagLigaDesliga] = useState();
+  const [flagLigaDesliga, setFlagLigaDesliga] = useState();
   
   const infosArCondicionadoRef = firebase.database().ref('ControleDeDados/arCondicionado/');
 
@@ -31,6 +31,7 @@ export default function ArCondicionadoScreen() {
           informacao.push(info.val());
         });
 
+        setTemperaturaArCondicionado(informacao[0].temperatura)
         setTemperaturaAmbiente(informacao[0].temperaturaAmbiente);
         setConsumo(informacao[0].consumo);
         setFlagLigaDesliga(informacao[0].ligadoDesligado);
@@ -39,13 +40,13 @@ export default function ArCondicionadoScreen() {
 
   const aumentaTemperatura = () => {
     if(temperaturaArCondicionado < 26) {
-      setTemperaturaArCondicionado(temperaturaArCondicionado + 1);
+      infosArCondicionadoRef.update({'temperatura': temperaturaArCondicionado + 1});
     }
   }
 
   const diminuiTemperatura = () => {
     if(temperaturaArCondicionado > 16) {
-      setTemperaturaArCondicionado(temperaturaArCondicionado - 1);
+      infosArCondicionadoRef.update({'temperatura': temperaturaArCondicionado - 1});
     }
   }
   
