@@ -6,6 +6,10 @@ import { Feather } from '@expo/vector-icons';
 
 import * as firebase from 'firebase';
 
+import fetch from 'cross-fetch';
+
+let esp32Ip;
+
 export default function EsteiraScreen() {
   const [consumo, setConsumo] = useState();
 
@@ -21,6 +25,7 @@ export default function EsteiraScreen() {
 
   useEffect(() => {
     carregarInfo();
+    carregarIp();
   }, []);
 
   const carregarInfo = () => {
@@ -47,8 +52,30 @@ export default function EsteiraScreen() {
       });
   };
 
+  const carregarIp = () => {
+    firebase
+      .database()
+      .ref('IP/')
+      .on('value', (snapshot) => {
+        esp32Ip = snapshot;
+      })
+  }
+
+  const ligaDesliga = () => {
+    if(flagLigaDesliga == 0) {
+      console.log('Ligado!');
+      infosEsteiraRef.update({'ligadoDesligado': 1});
+    } else {
+      console.log('Desligado!');
+      infosEsteiraRef.update({'ligadoDesligado': 0});
+    }
+  }
+
+  const paradaDeEmergencia = () => {
+    fetch(`http://${esp32Ip}/off`);
+  }
+
   function formataValor(valor, setValor) {
-    console.log(valor)
     if (valor < 10) {
       setValor(`0${valor}`)
     }
@@ -77,11 +104,11 @@ export default function EsteiraScreen() {
       </View>
 
       <View style={styles.viewBotoes}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={ligaDesliga}>
           <Feather name="power" size={50} color={'black'} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.botaoEmergencia}>
+        <TouchableOpacity style={styles.botaoEmergencia} onPress={paradaDeEmergencia}>
           <Text style={styles.txtBotaoEmergencia}>Emergência</Text>
         </TouchableOpacity>
       </View>
