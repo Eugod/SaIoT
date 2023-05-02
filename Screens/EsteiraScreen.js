@@ -57,7 +57,7 @@ export default function EsteiraScreen() {
       .database()
       .ref('IP/')
       .on('value', (snapshot) => {
-        esp32Ip = snapshot;
+        esp32Ip = snapshot.val();
       })
   }
 
