@@ -2,13 +2,17 @@
 #include <WiFi.h>
 #include <IOXhop_FirebaseESP32.h>
 #include <ArduinoJson.h>
+#include <dht11.h>
 
 //fazendo definições para não repetir muito texto durante o código 
 #define WIFI_SSID "Bratislava"
-#define WIFI_PASSWORD "Neguebaloko21"
+#define WIFI_PASSWORD "slamaluco"
 WiFiServer server(80);
 #define FIREBASE_HOST "https://saiot-fb259-default-rtdb.firebaseio.com/"
 #define FIREBASE_AUTH "wo2oMjKoNtRe7thwTNfNWr6gq8fVwYVGMPmvcXPc"
+
+#define DHT11PIN 13   //definição do pino do sensor DHT11
+dht11 DHT11;
 
 int led = 2;
 
@@ -18,18 +22,9 @@ int estadoDimer;
 int estadoEsteira;
 
 //informações do ar condicionado que serão puxadas do banco de dados
-/*
-int consumoArCondicionado = 0;
 int temperaturaArCondicionado;
 int temperaraturaAmbiente;
-*/
 
-//informações da esteira que serão puxadas do banco de dados
-int consumoEsteira = 0;
-int horasDeUsoDiario = 0;
-int minutosDeUsoDiario = 0;
-int horasDeUsoTotal;
-int minutosDeUsoTotal;
 
 //variáveis da função meuDelay
 unsigned long tempoAnterior;
@@ -65,19 +60,16 @@ void setup() {
 }
 
 void loop() {
-  /*
   verificaEstadoDoArCondicionado();
   enviarDadosDoArCondicionadoParaBancoDeDados();
-  */
-
+  
+  /*
   verificaEstadoDaEsteira();
-  puxaTempoDeUsoTotal();
-  enviarDadosDaEsteiraParaBancoDeDados();
   requisicaoClient();
+  */
 }
 
 //funções ar condiciondao
-/*
 void verificaEstadoDoArCondicionado() {
   estadoArCondicionado = Firebase.getInt("/ControleDeDados/arCondicionado/ligadoDesligado");
 
@@ -94,19 +86,17 @@ void verificaTemperaturaDoArCondicionado() {
 
 void enviarDadosDoArCondicionadoParaBancoDeDados() {
   while(estadoArCondicionado == 1) {
-    consumoArCondicionado ++;
-
-    Firebase.set("ControleDeDados/arCondicionado/consumo", consumoArCondicionado);
-
-    meuDelay(60000);
-
     verificaEstadoDoArCondicionado();
     verificaTemperaturaDoArCondicionado();
+    sensorDeTemperatura();
+    
+    meuDelay(1000);
   }
 }
-*/
+
 
 //funções dimer
+/*
 void verificaEstadoDoDimer() {
   estadoDimer = Firebase.getInt("/ControleDeDados/dimer/ligadoDesligado");
 
@@ -116,18 +106,10 @@ void verificaEstadoDoDimer() {
     digitalWrite(led, 0);
   }
 }
-
-void enviarDadosDoDimerParaBancoDeDados() {
-  while(estadoDimer == 1) {
-
-
-    meuDelay(1000);
-    
-    verificaEstadoDoDimer();
-  }
-}
+*/
 
 //funções esteira
+/*
 void verificaEstadoDaEsteira() {
   estadoEsteira = Firebase.getInt("/ControleDeDados/esteira/ligadoDesligado");
 
@@ -135,41 +117,6 @@ void verificaEstadoDaEsteira() {
     digitalWrite(led, 1);
   } else {
     digitalWrite(led, 0);
-  }
-}
-
-void puxaTempoDeUsoTotal() {
-  horasDeUsoTotal = Firebase.getInt("/ControleDeDados/esteira/horasDeUsoTotal");
-  minutosDeUsoTotal = Firebase.getInt("/ControleDeDados/esteira/minutosDeUsoTotal");
-}
-
-void enviarDadosDaEsteiraParaBancoDeDados() {
-  Firebase.set("ControleDeDados/esteira/horasDeUsoDiario", horasDeUsoDiario);
-
-  while(estadoEsteira == 1) {
-    consumoEsteira ++;
-    minutosDeUsoDiario ++;
-    minutosDeUsoTotal ++;
-
-    if(minutosDeUsoDiario == 60) {
-      minutosDeUsoDiario = 0;
-      horasDeUsoDiario ++;
-      Firebase.set("ControleDeDados/esteira/horasDeUsoDiario", horasDeUsoDiario);
-    }
-
-    if(minutosDeUsoTotal == 60){
-      minutosDeUsoTotal = 0;
-      horasDeUsoTotal++;
-      Firebase.set("ControleDeDados/esteira/horasDeUsoTotal", horasDeUsoTotal);
-    }
-
-    Firebase.set("ControleDeDados/esteira/consumo", consumoEsteira);
-    Firebase.set("ControleDeDados/esteira/minutosDeUsoDiario", minutosDeUsoDiario);
-    Firebase.set("ControleDeDados/esteira/minutosDeUsoTotal", minutosDeUsoTotal);
-
-    meuDelay(60000);
-    
-    verificaEstadoDaEsteira();
   }
 }
 
@@ -189,6 +136,7 @@ void requisicaoClient() {
 
   client.flush();
 }
+*/
 
 //função delay
 void meuDelay(int delay) {
@@ -200,20 +148,16 @@ void meuDelay(int delay) {
   	tempoAtual = millis();
 
     //verificações e interrupção ar condicionado
-    /*
     verificaTemperaturaDoArCondicionado();
     verificaEstadoDoArCondicionado();
     if(estadoArCondicionado == 0) {
       break;
     }
-    */
-
-    //verificações e interrupção esteira
-    requisicaoClient();
-    verificaEstadoDaEsteira();
-    if(estadoEsteira == 0) {
-      break;
-    }
   }
 }
 
+void sensorDeTemperatura() {
+  int check = DHT11.read(DHT11PIN);
+
+  Firebase.set("ControleDeDados/arCondicionado/temperaturaAmbiente", (float)DHT11.temperature, 1);
+}
