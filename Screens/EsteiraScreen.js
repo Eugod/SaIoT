@@ -67,7 +67,7 @@ export default function EsteiraScreen() {
   }, [flagLigaDesliga]);
 
   useEffect(() => {
-    setConsumo(calculaConsumo(14920, horasDeUsoDiario));
+    setConsumo(calculaConsumo(14920, horasDeUsoDiario).toFixed(2));
   }, [horasDeUsoDiario]);
 
   const carregarInfo = () => {
