@@ -6,15 +6,17 @@ import { Feather } from '@expo/vector-icons';
 
 import * as firebase from 'firebase';
 
+import { calculaConsumo } from '../Assets/funcaoCalculaConsumo';
+
 import fetch from 'cross-fetch';
 
 let esp32Ip;
 
 export default function EsteiraScreen() {
-  const [consumo, setConsumo] = useState();
+  const [consumo, setConsumo] = useState(0);
 
-  const [horasDeUsoDiario, setHorasDeUsoDiario] = useState();
-  const [minutosDeUsoDiario, setMinutosDeUsoDiario] = useState();
+  const [horasDeUsoDiario, setHorasDeUsoDiario] = useState(0);
+  const [minutosDeUsoDiario, setMinutosDeUsoDiario] = useState(0);
 
   const [horasDeUsoTotal, setHorasDeUsoTotal] = useState();
   const [minutosDeUsoTotal, setMinutosDeUsoTotal] = useState();
@@ -28,6 +30,46 @@ export default function EsteiraScreen() {
     carregarIp();
   }, []);
 
+  useEffect(() => {
+    let intervalId = null;
+
+    if (flagLigaDesliga == 1) {
+      intervalId = setInterval(() => {
+        setMinutosDeUsoDiario(minutosDeUsoDiario => {
+          if (minutosDeUsoDiario >= 59) {
+            setHorasDeUsoDiario(horasDeUsoDiario => horasDeUsoDiario + 1);
+            return 0;
+          } else {
+            return minutosDeUsoDiario + 1;
+          }
+        });
+
+        setMinutosDeUsoTotal(minutosDeUsoTotal => {
+          if (minutosDeUsoTotal >= 59) {
+            setHorasDeUsoTotal(horasDeUsoTotal => horasDeUsoTotal + 1);
+
+            firebase.database().ref('ControleDeDados/esteira/').update({
+              'horasDeUsoTotal': horasDeUsoTotal + 1,
+              'minutosDeUsoTotal': 0,
+            });
+
+            return 0;
+          } else {
+            firebase.database().ref('ControleDeDados/esteira/').update({ 'minutosDeUsoTotal': minutosDeUsoTotal + 1 });
+
+            return minutosDeUsoTotal + 1;
+          }
+        });
+      }, 1000);
+    }
+
+    return () => clearInterval(intervalId);
+  }, [flagLigaDesliga]);
+
+  useEffect(() => {
+    setConsumo(calculaConsumo(14920, horasDeUsoDiario));
+  }, [horasDeUsoDiario]);
+
   const carregarInfo = () => {
     firebase
       .database()
@@ -38,17 +80,9 @@ export default function EsteiraScreen() {
           informacao.push(info.val());
         });
 
-        setConsumo(informacao[1].consumo);
-        setHorasDeUsoDiario(informacao[1].horasDeUsoDiario);
-        setMinutosDeUsoDiario(informacao[1].minutosDeUsoDiario);
         setHorasDeUsoTotal(informacao[1].horasDeUsoTotal);
         setMinutosDeUsoTotal(informacao[1].minutosDeUsoTotal);
         setFlagLigaDesliga(informacao[1].ligadoDesligado);
-
-        formataValor(informacao[1].horasDeUsoDiario, setHorasDeUsoDiario);
-        formataValor(informacao[1].minutosDeUsoDiario, setMinutosDeUsoDiario);
-        formataValor(informacao[1].horasDeUsoTotal, setHorasDeUsoTotal);
-        formataValor(informacao[1].minutosDeUsoTotal, setMinutosDeUsoTotal);
       });
   };
 
@@ -62,12 +96,12 @@ export default function EsteiraScreen() {
   }
 
   const ligaDesliga = () => {
-    if(flagLigaDesliga == 0) {
+    if (flagLigaDesliga == 0) {
       console.log('Ligado!');
-      infosEsteiraRef.update({'ligadoDesligado': 1});
+      infosEsteiraRef.update({ 'ligadoDesligado': 1 });
     } else {
       console.log('Desligado!');
-      infosEsteiraRef.update({'ligadoDesligado': 0});
+      infosEsteiraRef.update({ 'ligadoDesligado': 0 });
     }
   }
 
@@ -75,9 +109,11 @@ export default function EsteiraScreen() {
     fetch(`http://${esp32Ip}/off`);
   }
 
-  function formataValor(valor, setValor) {
+  function formataValor(valor) {
     if (valor < 10) {
-      setValor(`0${valor}`)
+      return `0${valor}`;
+    } else {
+      return valor;
     }
   }
 
@@ -87,19 +123,19 @@ export default function EsteiraScreen() {
         <View style={styles.viewConsumo}>
           <Text style={styles.txtInfos}>Consumo:</Text>
 
-          <Text style={styles.valInfos}>{consumo} W</Text>
+          <Text style={styles.valInfos}>{consumo} kW/h</Text>
         </View>
 
         <View style={styles.viewUsoDiario}>
           <Text style={styles.txtInfos}>Tempo de uso diário:</Text>
 
-          <Text style={styles.valInfos}>{horasDeUsoDiario}:{minutosDeUsoDiario} hrs</Text>
+          <Text style={styles.valInfos}>{formataValor(horasDeUsoDiario)}:{formataValor(minutosDeUsoDiario)} hrs</Text>
         </View>
 
         <View style={styles.viewUsoTotal}>
           <Text style={styles.txtInfos}>Tempo de uso total:</Text>
 
-          <Text style={styles.valInfos}>{horasDeUsoTotal}:{minutosDeUsoTotal} hrs</Text>
+          <Text style={styles.valInfos}>{formataValor(horasDeUsoTotal)}:{formataValor(minutosDeUsoTotal)} hrs</Text>
         </View>
       </View>
 

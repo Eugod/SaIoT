@@ -6,6 +6,8 @@ import { Feather, FontAwesome } from '@expo/vector-icons';
 
 import * as firebase from 'firebase';
 
+import { calculaConsumo } from '../Assets/funcaoCalculaConsumo';
+
 export default function ArCondicionadoScreen() {
   const [consumo, setConsumo] = useState();
 
@@ -15,11 +17,30 @@ export default function ArCondicionadoScreen() {
 
   const [flagLigaDesliga, setFlagLigaDesliga] = useState();
 
+  const [horasDeUsoDiario, setHorasDeUsoDiario] = useState(0);
+
   const infosArCondicionadoRef = firebase.database().ref('ControleDeDados/arCondicionado/');
 
   useEffect(() => {
     carregarInfo();
+    setConsumo(0);
   }, []);
+
+  useEffect(() => {
+    let intervalId = null;
+
+    if (flagLigaDesliga == 1) {
+      intervalId = setInterval(() => {
+        setHorasDeUsoDiario(horasDeUsoDiario => horasDeUsoDiario + 1);
+      }, 5000);
+    }
+
+    return () => clearInterval(intervalId);
+  }, [flagLigaDesliga]);
+
+  useEffect(() => {
+    firebase.database().ref('ControleDeDados/arCondicionado/').update({'consumo': calculaConsumo(1690, horasDeUsoDiario)});
+  }, [horasDeUsoDiario]);
 
   const carregarInfo = () => {
     firebase
@@ -76,7 +97,7 @@ export default function ArCondicionadoScreen() {
         <View style={styles.viewConsumo}>
           <Text style={styles.txtConsumo}>Consumo</Text>
 
-          <Text style={styles.consumo}>{consumo} W</Text>
+          <Text style={styles.consumo}>{consumo} kW/h</Text>
         </View>
       </View>
 

@@ -24,7 +24,7 @@ export default function LoginScreen() {
     <SafeAreaView style={styles.container}>
       <Text style={styles.titulo}>App IoT</Text>
 
-      <Image style={styles.logo} source={require('../assets/logo.png')} />
+      <Image style={styles.logo} source={require('../Assets/logo.png')} />
 
       <View style={styles.viewTxtInputs}>
         <Text>Login:</Text>
