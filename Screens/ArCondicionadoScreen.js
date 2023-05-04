@@ -39,7 +39,7 @@ export default function ArCondicionadoScreen() {
   }, [flagLigaDesliga]);
 
   useEffect(() => {
-    firebase.database().ref('ControleDeDados/arCondicionado/').update({'consumo': calculaConsumo(1690, horasDeUsoDiario)});
+    firebase.database().ref('ControleDeDados/arCondicionado/').update({'consumo': calculaConsumo(1690, horasDeUsoDiario).toFixed(2)});
   }, [horasDeUsoDiario]);
 
   const carregarInfo = () => {
