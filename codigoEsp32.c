@@ -23,8 +23,6 @@ int estadoEsteira;
 
 //informações do ar condicionado que serão puxadas do banco de dados
 int temperaturaArCondicionado;
-int temperaraturaAmbiente;
-
 
 //variáveis da função meuDelay
 unsigned long tempoAnterior;
@@ -84,11 +82,17 @@ void verificaTemperaturaDoArCondicionado() {
   temperaturaArCondicionado = Firebase.getInt("ControleDeDados/arCondicionado/temperatura");
 }
 
+void sensorDeTemperaturaAmbiente() {
+  int check = DHT11.read(DHT11PIN);
+
+  Firebase.set("ControleDeDados/arCondicionado/temperaturaAmbiente", (float)DHT11.temperature, 1);
+}
+
 void enviarDadosDoArCondicionadoParaBancoDeDados() {
   while(estadoArCondicionado == 1) {
     verificaEstadoDoArCondicionado();
     verificaTemperaturaDoArCondicionado();
-    sensorDeTemperatura();
+    sensorDeTemperaturaAmbiente();
     
     meuDelay(1000);
   }
@@ -154,10 +158,4 @@ void meuDelay(int delay) {
       break;
     }
   }
-}
-
-void sensorDeTemperatura() {
-  int check = DHT11.read(DHT11PIN);
-
-  Firebase.set("ControleDeDados/arCondicionado/temperaturaAmbiente", (float)DHT11.temperature, 1);
 }
