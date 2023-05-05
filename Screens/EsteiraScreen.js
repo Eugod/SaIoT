@@ -80,9 +80,9 @@ export default function EsteiraScreen() {
           informacao.push(info.val());
         });
 
-        setHorasDeUsoTotal(informacao[1].horasDeUsoTotal);
-        setMinutosDeUsoTotal(informacao[1].minutosDeUsoTotal);
-        setFlagLigaDesliga(informacao[1].ligadoDesligado);
+        setHorasDeUsoTotal(informacao[2].horasDeUsoTotal);
+        setMinutosDeUsoTotal(informacao[2].minutosDeUsoTotal);
+        setFlagLigaDesliga(informacao[2].ligadoDesligado);
       });
   };
 
