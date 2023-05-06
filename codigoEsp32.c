@@ -6,7 +6,7 @@
 
 //fazendo definições para não repetir muito texto durante o código 
 #define WIFI_SSID "Bratislava"
-#define WIFI_PASSWORD "slamaluco"
+#define WIFI_PASSWORD "Neguebaloko21"
 WiFiServer server(80);
 #define FIREBASE_HOST "https://saiot-fb259-default-rtdb.firebaseio.com/"
 #define FIREBASE_AUTH "wo2oMjKoNtRe7thwTNfNWr6gq8fVwYVGMPmvcXPc"
@@ -22,7 +22,9 @@ int estadoDimer;
 int estadoEsteira;
 
 //informações do ar condicionado que serão puxadas do banco de dados
+/*
 int temperaturaArCondicionado;
+*/
 
 //variáveis da função meuDelay
 unsigned long tempoAnterior;
@@ -58,9 +60,12 @@ void setup() {
 }
 
 void loop() {
+  verificaEstadoDoDimer();
+
+  /*
   verificaEstadoDoArCondicionado();
   enviarDadosDoArCondicionadoParaBancoDeDados();
-  
+  */
   /*
   verificaEstadoDaEsteira();
   requisicaoClient();
@@ -68,6 +73,7 @@ void loop() {
 }
 
 //funções ar condiciondao
+/*
 void verificaEstadoDoArCondicionado() {
   estadoArCondicionado = Firebase.getInt("/ControleDeDados/arCondicionado/ligadoDesligado");
 
@@ -97,52 +103,47 @@ void enviarDadosDoArCondicionadoParaBancoDeDados() {
     meuDelay(1000);
   }
 }
-
+*/
 
 //funções dimer
-/*
-void verificaEstadoDoDimer() {
-  estadoDimer = Firebase.getInt("/ControleDeDados/dimer/ligadoDesligado");
 
-  if(estadoDimer == 1) {
+void verificaEstadoDoDimer() {
+  estadoDimer = Firebase.getInt("/ControleDeDados/dimer/porcentagemDeIluminacao");
+  if(estadoDimer >= 1) {
     digitalWrite(led, 1);
   } else {
     digitalWrite(led, 0);
   }
 }
-*/
+
 
 //funções esteira
 /*
 void verificaEstadoDaEsteira() {
   estadoEsteira = Firebase.getInt("/ControleDeDados/esteira/ligadoDesligado");
-
   if(estadoEsteira == 1) {
     digitalWrite(led, 1);
   } else {
     digitalWrite(led, 0);
   }
 }
-
 //requisição do client
 void requisicaoClient() {
   WiFiClient client = server.available();
-
   if(client) {
     String req = client.readStringUntil('\r');
     client.flush();
-
     if(req.indexOf("off") != -1) {
       digitalWrite(led, 0);
       Firebase.set("ControleDeDados/esteira/ligadoDesligado", 0);
     }
   }
-
   client.flush();
 }
 */
 
 //função delay
+/*
 void meuDelay(int delay) {
   tempoAnterior = millis();
   
@@ -159,3 +160,4 @@ void meuDelay(int delay) {
     }
   }
 }
+*/
