@@ -56,13 +56,16 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight,
     alignItems: 'center',
     padding: 10,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    height: '100%',
+    backgroundColor: '#1363DF',
   },
 
   titulo: {
     fontSize: 35,
     fontWeight: 'bold',
-    marginBottom: '15%'
+    marginBottom: '15%',
+    color: '#DFF6FF'
   },
 
   lista: {

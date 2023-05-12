@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { BackHandler } from 'react-native';
+import { BackHandler, StatusBar } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -36,10 +36,19 @@ export default function App() {
 
   return (
     <NavigationContainer>
+      <StatusBar translucent backgroundColor="#06283D" barStyle="light-content" style={{ height: 0 }} />
       <Tab.Navigator
         screenOptions={{
-          tabBarActiveTintColor: 'black',
-          tabBarInactiveTintColor: 'grey',
+          tabBarActiveTintColor: '#DFF6FF',
+          tabBarInactiveTintColor: '#808080',
+          headerTintColor: '#DFF6FF',
+          headerStyle: {
+            backgroundColor: '#06283D',
+          },
+          tabBarStyle: {
+            backgroundColor: '#06283D',
+            borderTopWidth: 0,
+          },
         }}>
         <Tab.Screen
           name="Login"

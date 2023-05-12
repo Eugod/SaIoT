@@ -141,7 +141,7 @@ export default function EsteiraScreen() {
 
       <View style={styles.viewBotoes}>
         <TouchableOpacity onPress={ligaDesliga}>
-          <Feather name="power" size={50} color={'black'} />
+          <Feather name="power" size={50} color={'#06283D'} />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.botaoEmergencia} onPress={paradaDeEmergencia}>
@@ -156,24 +156,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 10
+    paddingTop: 10,
+    backgroundColor: '#1363DF',
   },
 
   viewInfos: {
     flexDirection: 'column',
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 10,
     width: '90%',
     height: '40%',
     justifyContent: 'space-between',
+    borderColor: '#DFF6FF'
   },
 
   txtInfos: {
-    fontSize: 20
+    fontSize: 20,
+    color: '#DFF6FF'
   },
 
   valInfos: {
-    fontSize: 20
+    fontSize: 20,
+    color: '#DFF6FF'
   },
 
   viewConsumo: {
@@ -183,6 +187,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     height: '33%',
     alignItems: 'center',
+    borderColor: '#DFF6FF'
   },
 
   viewUsoDiario: {
@@ -200,6 +205,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 2,
     height: '33%',
     alignItems: 'center',
+    borderColor: '#DFF6FF'
   },
 
   viewBotoes: {
@@ -218,11 +224,19 @@ const styles = StyleSheet.create({
     padding: 8,
     alignItems: 'center',
     width: '35%',
-    backgroundColor: 'red',
-    borderColor: 'red'
+    backgroundColor: '#FF0000',
+    borderColor: '#FF0000',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 4
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3
   },
 
   txtBotaoEmergencia: {
-    color: 'white'
+    color: '#DFF6FF'
   },
 })

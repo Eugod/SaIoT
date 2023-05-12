@@ -40,12 +40,12 @@ export default function DimerScreen() {
         onChange={value => setValue(value)}
         contentContainerStyle={styles.contentContainerStyle}
         strokeWidth={20}
-        buttonBorderColor="#3FE3EB"
-        buttonFillColor="#fff"
+        buttonBorderColor="#06283D"
+        buttonFillColor="#DFF6FF"
         buttonStrokeWidth={10}
         openingRadian={Math.PI / 6}
         buttonRadius={10}
-        linearGradient={[{ stop: '0%', color: '#3FE3EB' }, { stop: '100%', color: '#7E84ED' }]}
+        linearGradient={[{ stop: '0%', color: '#B9DFED' }, { stop: '100%', color: '#0248b5' }]}
       >
         <Text style={styles.value}>{value}</Text>
       </CircularSlider>
@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#1363DF',
   },
   contentContainerStyle: {
     justifyContent: 'center',
@@ -66,6 +67,6 @@ const styles = StyleSheet.create({
   value: {
     fontWeight: '500',
     fontSize: 32,
-    color: '#3FE3EB'
+    color: '#DFF6FF'
   }
 });

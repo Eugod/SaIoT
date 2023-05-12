@@ -103,15 +103,15 @@ export default function ArCondicionadoScreen() {
 
       <View style={styles.viewBotoes}>
         <TouchableOpacity onPress={aumentaTemperatura}>
-          <FontAwesome name="arrow-circle-up" size={50} color={'black'} />
+          <FontAwesome name="arrow-circle-up" size={50} color={'#06283D'} />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={diminuiTemperatura}>
-          <FontAwesome name="arrow-circle-down" size={50} color={'black'} />
+          <FontAwesome name="arrow-circle-down" size={50} color={'#06283D'} />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={ligaDesliga}>
-          <Feather name="power" size={50} color={'black'} />
+          <Feather name="power" size={50} color={'#06283D'} />
         </TouchableOpacity>
       </View>
     </View>
@@ -122,16 +122,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 10
+    paddingTop: 10,
+    backgroundColor: '#1363DF',
   },
 
   viewInfos: {
     flexDirection: 'row',
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 10,
     width: '90%',
     height: '30%',
     justifyContent: 'space-between',
+    borderColor: '#DFF6FF'
   },
 
   viewAmbiente: {
@@ -139,16 +141,19 @@ const styles = StyleSheet.create({
     borderRightWidth: 2,
     alignItems: 'center',
     padding: 10,
+    borderColor: '#DFF6FF'
   },
 
   txtAmbitente: {
     fontWeight: 'bold',
     fontSize: 18,
     marginBottom: '50%',
+    color: '#DFF6FF'
   },
 
   tempAmbiente: {
-    fontSize: 18
+    fontSize: 18,
+    color: '#DFF6FF'
   },
 
   viewArCondicionado: {
@@ -160,6 +165,7 @@ const styles = StyleSheet.create({
   tempArCondicionado: {
     fontWeight: 'bold',
     fontSize: 65,
+    color: '#DFF6FF'
   },
 
   viewConsumo: {
@@ -167,16 +173,19 @@ const styles = StyleSheet.create({
     borderLeftWidth: 2,
     alignItems: 'center',
     padding: 10,
+    borderColor: '#DFF6FF'
   },
 
   txtConsumo: {
     fontWeight: 'bold',
     fontSize: 18,
     marginBottom: '50%',
+    color: '#DFF6FF'
   },
 
   consumo: {
-    fontSize: 18
+    fontSize: 18,
+    color: '#DFF6FF'
   },
 
   viewBotoes: {

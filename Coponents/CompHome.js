@@ -42,7 +42,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 5,
     borderRadius: 5,
-    marginBottom: 30
+    marginBottom: 30,
+    backgroundColor: '#06283D',
+    borderColor: '#DFF6FF'
   },
 
   container: {
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
   img: {
     width: '35%',
     height: '100%',
-    borderRadius: 15,
+    borderRadius: 5,
   },
 
   viewTxt: {
@@ -64,11 +66,13 @@ const styles = StyleSheet.create({
   titulo: {
     fontWeight: 'bold',
     fontSize: 20,
-    marginBottom: 15
+    marginBottom: 15,
+    color: '#DFF6FF'
   },
 
   descricao: {
     fontSize: 12,
-    textAlign: 'justify'
+    textAlign: 'justify',
+    color: '#DFF6FF'
   },
 });

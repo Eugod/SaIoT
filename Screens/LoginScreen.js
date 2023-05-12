@@ -27,15 +27,15 @@ export default function LoginScreen() {
       <Image style={styles.logo} source={require('../Assets/logo.png')} />
 
       <View style={styles.viewTxtInputs}>
-        <Text>Login:</Text>
+        <Text style={styles.txtDosInputsEBotao}>Login:</Text>
         <TextInput style={styles.txtInputs} />
 
-        <Text>Senha:</Text>
+        <Text style={styles.txtDosInputsEBotao}>Senha:</Text>
         <TextInput style={styles.txtInputs} />
       </View>
 
       <TouchableOpacity style={styles.botaoEntrar} onPress={login}>
-        <Text>Entrar</Text>
+        <Text style={styles.txtDosInputsEBotao}>Entrar</Text>
       </TouchableOpacity>
 
       <View style={styles.gambiarra}></View>
@@ -50,11 +50,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 10,
+    backgroundColor: '#1363DF'
   },
 
   titulo: {
     fontSize: 35,
     fontWeight: 'bold',
+    color: '#DFF6FF'
   },
 
   logo: {
@@ -74,14 +76,29 @@ const styles = StyleSheet.create({
     fontSize: 15,
     borderRadius: 5,
     marginBottom: 15,
+    backgroundColor: '#DFF6FF',
+    borderColor: '#06283D',
   },
 
   botaoEntrar: {
-    borderWidth: 1,
     borderRadius: 20,
     padding: 8,
     width: '35%',
     alignItems: 'center',
+    backgroundColor: '#47B5FF',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 4
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3
+  },
+
+  txtDosInputsEBotao: {
+    color: '#DFF6FF',
+    fontSize: 18
   },
 
   gambiarra: {
