@@ -10,13 +10,12 @@ export default function DimerScreen() {
 
   useEffect(() => {
     carregarInfo();
-    setValue(0);
   }, []);
 
   useEffect(() => {
-    let a = value
-    firebase.database().ref('ControleDeDados/dimer/').update({ 'porcentagemDeIluminacao': a });
-  }, [value])
+    let iluminacao = value
+    firebase.database().ref('ControleDeDados/dimer/').update({ 'porcentagemDeIluminacao': iluminacao });
+  }, [value]);
 
   const carregarInfo = () => {
     const databaseRef = firebase.database().ref('ControleDeDados/');
