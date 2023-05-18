@@ -6,7 +6,7 @@ import { Feather } from '@expo/vector-icons';
 
 import * as firebase from 'firebase';
 
-import { calculaConsumo } from '../assets/funcaoCalculaConsumo';
+import { calculaConsumo } from '../Assets/funcaoCalculaConsumo';
 
 import fetch from 'cross-fetch';
 
