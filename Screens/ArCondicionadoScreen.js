@@ -6,7 +6,7 @@ import { Feather, FontAwesome } from '@expo/vector-icons';
 
 import * as firebase from 'firebase';
 
-import { calculaConsumo } from '../Assets/funcaoCalculaConsumo';
+import { calculaConsumo } from '../assets/funcaoCalculaConsumo';
 
 export default function ArCondicionadoScreen() {
   const [consumo, setConsumo] = useState();

@@ -1,16 +1,11 @@
 {
   "expo": {
-    "name": "iot",
+    "name": "SaIot",
     "slug": "snack-a9b379e4-f087-4f3d-b839-f844b16f4b85",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -21,13 +16,15 @@
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+      "package": "com.eugod.snacka9b379e4f0874f3db839f844b16f4b85"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/logo.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "be4cafe5-d05b-43dc-b3df-7fc7193c4e9e"
+      }
     }
   }
 }
