@@ -111,7 +111,7 @@ export default function ArCondicionadoScreen() {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={ligaDesliga}>
-          <Feather name="power" size={50} color={'#06283D'} />
+          <Feather name="power" size={50} color={flagLigaDesliga === 1 ? '#00FF00' : '#06283D'} />
         </TouchableOpacity>
       </View>
     </View>

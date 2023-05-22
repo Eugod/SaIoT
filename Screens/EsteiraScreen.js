@@ -38,8 +38,18 @@ export default function EsteiraScreen() {
         setMinutosDeUsoDiario(minutosDeUsoDiario => {
           if (minutosDeUsoDiario >= 59) {
             setHorasDeUsoDiario(horasDeUsoDiario => horasDeUsoDiario + 1);
+
+            // Atualiza as informações no banco de dados
+            firebase.database().ref('ControleDeDados/esteira/').update({
+              'horasDeUsoDiario': horasDeUsoDiario + 1,
+              'minutosDeUsoDiario': 0,
+            });
+
             return 0;
           } else {
+            // Atualiza as informações no banco de dados
+            firebase.database().ref('ControleDeDados/esteira/').update({ 'minutosDeUsoDiario': minutosDeUsoDiario + 1 });
+
             return minutosDeUsoDiario + 1;
           }
         });
@@ -83,6 +93,8 @@ export default function EsteiraScreen() {
         setHorasDeUsoTotal(informacao[2].horasDeUsoTotal);
         setMinutosDeUsoTotal(informacao[2].minutosDeUsoTotal);
         setFlagLigaDesliga(informacao[2].ligadoDesligado);
+        setHorasDeUsoDiario(informacao[2].horasDeUsoDiario);
+        setMinutosDeUsoDiario(informacao[2].minutosDeUsoDiario);
       });
   };
 
@@ -141,7 +153,7 @@ export default function EsteiraScreen() {
 
       <View style={styles.viewBotoes}>
         <TouchableOpacity onPress={ligaDesliga}>
-          <Feather name="power" size={50} color={'#06283D'} />
+          <Feather name="power" size={50} color={flagLigaDesliga === 1 ? '#00FF00' : '#06283D'} />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.botaoEmergencia} onPress={paradaDeEmergencia}>
