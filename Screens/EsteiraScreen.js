@@ -62,7 +62,7 @@ export default function EsteiraScreen() {
   }, [flagLigaDesliga]);
 
   useEffect(() => {
-    setConsumo(calculaConsumo(14920, horasDeUsoDiario).toFixed(2));
+    firebase.database().ref('ControleDeDados/esteira/').update({'consumo': calculaConsumo(14920, horasDeUsoDiario).toFixed(2)});
   }, [horasDeUsoDiario]);
 
   const carregarInfo = () => {
@@ -78,6 +78,7 @@ export default function EsteiraScreen() {
         setHorasDeUsoTotal(informacao[2].horasDeUsoTotal);
         setMinutosDeUsoTotal(informacao[2].minutosDeUsoTotal);
         setFlagLigaDesliga(informacao[2].ligadoDesligado);
+        setConsumo(informacao[2].consumo);
       });
   };
 

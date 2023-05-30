@@ -23,7 +23,6 @@ export default function ArCondicionadoScreen() {
 
   useEffect(() => {
     carregarInfo();
-    setConsumo(0);
   }, []);
 
   useEffect(() => {
