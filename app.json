@@ -4,7 +4,7 @@
     "slug": "snack-a9b379e4-f087-4f3d-b839-f844b16f4b85",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo.png",
+    "icon": "./Assets/logo.png",
     "userInterfaceStyle": "light",
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -19,12 +19,13 @@
       "package": "com.eugod.snacka9b379e4f0874f3db839f844b16f4b85"
     },
     "web": {
-      "favicon": "./assets/logo.png"
+      "favicon": "./Assets/logo.png"
     },
     "extra": {
       "eas": {
         "projectId": "be4cafe5-d05b-43dc-b3df-7fc7193c4e9e"
       }
-    }
+    },
+    "owner": "eugod"
   }
 }

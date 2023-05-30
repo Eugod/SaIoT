@@ -39,17 +39,8 @@ export default function EsteiraScreen() {
           if (minutosDeUsoDiario >= 59) {
             setHorasDeUsoDiario(horasDeUsoDiario => horasDeUsoDiario + 1);
 
-            // Atualiza as informações no banco de dados
-            firebase.database().ref('ControleDeDados/esteira/').update({
-              'horasDeUsoDiario': horasDeUsoDiario + 1,
-              'minutosDeUsoDiario': 0,
-            });
-
             return 0;
           } else {
-            // Atualiza as informações no banco de dados
-            firebase.database().ref('ControleDeDados/esteira/').update({ 'minutosDeUsoDiario': minutosDeUsoDiario + 1 });
-
             return minutosDeUsoDiario + 1;
           }
         });
@@ -58,14 +49,8 @@ export default function EsteiraScreen() {
           if (minutosDeUsoTotal >= 59) {
             setHorasDeUsoTotal(horasDeUsoTotal => horasDeUsoTotal + 1);
 
-            firebase.database().ref('ControleDeDados/esteira/').update({
-              'horasDeUsoTotal': horasDeUsoTotal + 1,
-              'minutosDeUsoTotal': 0,
-            });
-
             return 0;
           } else {
-            firebase.database().ref('ControleDeDados/esteira/').update({ 'minutosDeUsoTotal': minutosDeUsoTotal + 1 });
 
             return minutosDeUsoTotal + 1;
           }
@@ -93,8 +78,6 @@ export default function EsteiraScreen() {
         setHorasDeUsoTotal(informacao[2].horasDeUsoTotal);
         setMinutosDeUsoTotal(informacao[2].minutosDeUsoTotal);
         setFlagLigaDesliga(informacao[2].ligadoDesligado);
-        setHorasDeUsoDiario(informacao[2].horasDeUsoDiario);
-        setMinutosDeUsoDiario(informacao[2].minutosDeUsoDiario);
       });
   };
 
