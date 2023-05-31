@@ -15,8 +15,8 @@ let esp32Ip;
 export default function EsteiraScreen() {
   const [consumo, setConsumo] = useState(0);
 
-  const [horasDeUsoDiario, setHorasDeUsoDiario] = useState(0);
-  const [minutosDeUsoDiario, setMinutosDeUsoDiario] = useState(0);
+  const [horasDeUsoDiario, setHorasDeUsoDiario] = useState();
+  const [minutosDeUsoDiario, setMinutosDeUsoDiario] = useState();
 
   const [horasDeUsoTotal, setHorasDeUsoTotal] = useState();
   const [minutosDeUsoTotal, setMinutosDeUsoTotal] = useState();
@@ -29,37 +29,6 @@ export default function EsteiraScreen() {
     carregarInfo();
     carregarIp();
   }, []);
-
-  useEffect(() => {
-    let intervalId = null;
-
-    if (flagLigaDesliga == 1) {
-      intervalId = setInterval(() => {
-        setMinutosDeUsoDiario(minutosDeUsoDiario => {
-          if (minutosDeUsoDiario >= 59) {
-            setHorasDeUsoDiario(horasDeUsoDiario => horasDeUsoDiario + 1);
-
-            return 0;
-          } else {
-            return minutosDeUsoDiario + 1;
-          }
-        });
-
-        setMinutosDeUsoTotal(minutosDeUsoTotal => {
-          if (minutosDeUsoTotal >= 59) {
-            setHorasDeUsoTotal(horasDeUsoTotal => horasDeUsoTotal + 1);
-
-            return 0;
-          } else {
-
-            return minutosDeUsoTotal + 1;
-          }
-        });
-      }, 1000);
-    }
-
-    return () => clearInterval(intervalId);
-  }, [flagLigaDesliga]);
 
   useEffect(() => {
     firebase.database().ref('ControleDeDados/esteira/').update({'consumo': calculaConsumo(14920, horasDeUsoDiario).toFixed(2)});
@@ -77,6 +46,8 @@ export default function EsteiraScreen() {
 
         setHorasDeUsoTotal(informacao[2].horasDeUsoTotal);
         setMinutosDeUsoTotal(informacao[2].minutosDeUsoTotal);
+        setHorasDeUsoDiario(informacao[2].horasDeUsoDiario);
+        setMinutosDeUsoDiario(informacao[2].minutosDeUsoDiario);
         setFlagLigaDesliga(informacao[2].ligadoDesligado);
         setConsumo(informacao[2].consumo);
       });
@@ -95,11 +66,33 @@ export default function EsteiraScreen() {
     if (flagLigaDesliga == 0) {
       console.log('Ligado!');
       infosEsteiraRef.update({ 'ligadoDesligado': 1 });
+      iniciarTimer();
     } else {
       console.log('Desligado!');
       infosEsteiraRef.update({ 'ligadoDesligado': 0 });
+      pararTimer();
     }
   }
+
+  const iniciarTimer = async () => {
+    try {
+      await fetch('http://10.0.1.153:3000/timer/start', {
+        method: 'POST',
+      });
+    } catch (error) {
+      console.error('Erro ao iniciar a contagem de tempo:', error);
+    }
+  };
+
+  const pararTimer = async () => {
+    try {
+      await fetch('http://10.0.1.153:3000/timer/stop', {
+        method: 'POST',
+      });
+    } catch (error) {
+      console.error('Erro ao parar a contagem de tempo:', error);
+    }
+  };
 
   const paradaDeEmergencia = () => {
     fetch(`http://${esp32Ip}/off`);

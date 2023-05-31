@@ -17,7 +17,7 @@ export default function ArCondicionadoScreen() {
 
   const [flagLigaDesliga, setFlagLigaDesliga] = useState();
 
-  const [horasDeUsoDiario, setHorasDeUsoDiario] = useState(0);
+  const [horasDeUso, setHorasDeUso] = useState();
 
   const infosArCondicionadoRef = firebase.database().ref('ControleDeDados/arCondicionado/');
 
@@ -26,20 +26,8 @@ export default function ArCondicionadoScreen() {
   }, []);
 
   useEffect(() => {
-    let intervalId = null;
-
-    if (flagLigaDesliga == 1) {
-      intervalId = setInterval(() => {
-        setHorasDeUsoDiario(horasDeUsoDiario => horasDeUsoDiario + 1);
-      }, 5000);
-    }
-
-    return () => clearInterval(intervalId);
-  }, [flagLigaDesliga]);
-
-  useEffect(() => {
-    firebase.database().ref('ControleDeDados/arCondicionado/').update({'consumo': calculaConsumo(1690, horasDeUsoDiario).toFixed(2)});
-  }, [horasDeUsoDiario]);
+    firebase.database().ref('ControleDeDados/arCondicionado/').update({'consumo': calculaConsumo(1690, horasDeUso).toFixed(2)});
+  }, [horasDeUso]);
 
   const carregarInfo = () => {
     firebase
@@ -53,6 +41,7 @@ export default function ArCondicionadoScreen() {
 
         setTemperaturaArCondicionado(informacao[0].temperatura);
         setTemperaturaAmbiente(informacao[0].temperaturaAmbiente);
+        setHorasDeUso(informacao[0].horasDeUso);
         setConsumo(informacao[0].consumo);
         setFlagLigaDesliga(informacao[0].ligadoDesligado);
       });
@@ -74,11 +63,33 @@ export default function ArCondicionadoScreen() {
     if (flagLigaDesliga == 0) {
       console.log('Ligado!');
       infosArCondicionadoRef.update({ 'ligadoDesligado': 1 });
+      iniciarTimer();
     } else {
       console.log('Desligado!');
       infosArCondicionadoRef.update({ 'ligadoDesligado': 0 });
+      pararTimer();
     }
   }
+
+  const iniciarTimer = async () => {
+    try {
+      await fetch('http://10.0.1.153:3000/timer/iniciar', {
+        method: 'POST',
+      });
+    } catch (error) {
+      console.error('Erro ao iniciar a contagem de tempo:', error);
+    }
+  };
+
+  const pararTimer = async () => {
+    try {
+      await fetch('http://10.0.1.153:3000/timer/parar', {
+        method: 'POST',
+      });
+    } catch (error) {
+      console.error('Erro ao parar a contagem de tempo:', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
