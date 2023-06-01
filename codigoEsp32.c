@@ -1,44 +1,45 @@
-//importando bibliotecas
+// importando bibliotecas
 #include <WiFi.h>
 #include <IOXhop_FirebaseESP32.h>
 #include <ArduinoJson.h>
 #include <dht11.h>
 
-//fazendo definições para não repetir muito texto durante o código 
+// fazendo definições para não repetir muito texto durante o código
 #define WIFI_SSID "Bratislava"
 #define WIFI_PASSWORD "Neguebaloko21"
 WiFiServer server(80);
 #define FIREBASE_HOST "https://saiot-fb259-default-rtdb.firebaseio.com/"
 #define FIREBASE_AUTH "wo2oMjKoNtRe7thwTNfNWr6gq8fVwYVGMPmvcXPc"
 
-#define DHT11PIN 13   //definição do pino do sensor DHT11
+#define DHT11PIN 13 // definição do pino do sensor DHT11
 dht11 DHT11;
 
 int led = 2;
 
-//variáveis de estado
+// variáveis de estado
 int estadoArCondicionado;
 int estadoDimer;
 int estadoEsteira;
 
-//informações do ar condicionado que serão puxadas do banco de dados
+// informações do ar condicionado que serão puxadas do banco de dados
 /*
 int temperaturaArCondicionado;
 */
 
-//variáveis da função meuDelay
+// variáveis da função meuDelay
 unsigned long tempoAnterior;
 unsigned long tempoAtual;
 
-void setup() {
+void setup()
+{
   pinMode(led, OUTPUT);
 
-  Serial.begin(115200);      //inicia comunicação serial
+  Serial.begin(115200); // inicia comunicação serial
 
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);     //inicia comunicação com wifi com rede definica anteriormente
-  
-  Serial.print("Conectando ao WiFi");       //imprime "Conectando ao wifi"
-  while (WiFi.status() != WL_CONNECTED)     //enquanto se conecta ao wifi fica colocando pontos
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD); // inicia comunicação com wifi com rede definica anteriormente
+
+  Serial.print("Conectando ao WiFi");   // imprime "Conectando ao wifi"
+  while (WiFi.status() != WL_CONNECTED) // enquanto se conecta ao wifi fica colocando pontos
   {
     Serial.print(".");
     delay(300);
@@ -52,14 +53,15 @@ void setup() {
   Serial.print("IP da rede: ");
   Serial.println(WiFi.localIP());
 
-  server.begin();   //inicia o servidor HTTP
+  server.begin(); // inicia o servidor HTTP
 
-  Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);   //inicia comunicação com firebase definido anteriormente
+  Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH); // inicia comunicação com firebase definido anteriormente
 
-  Firebase.set("IP", WiFi.localIP().toString());   //envia o IP da rede para o diretório IP no firebase
+  Firebase.set("IP", WiFi.localIP().toString()); // envia o IP da rede para o diretório IP no firebase
 }
 
-void loop() {
+void loop()
+{
   verificaEstadoDoDimer();
 
   /*
@@ -72,7 +74,7 @@ void loop() {
   */
 }
 
-//funções ar condiciondao
+// funções ar condiciondao
 /*
 void verificaEstadoDoArCondicionado() {
   estadoArCondicionado = Firebase.getInt("/ControleDeDados/arCondicionado/ligadoDesligado");
@@ -99,25 +101,28 @@ void enviarDadosDoArCondicionadoParaBancoDeDados() {
     verificaEstadoDoArCondicionado();
     verificaTemperaturaDoArCondicionado();
     sensorDeTemperaturaAmbiente();
-    
+
     meuDelay(1000);
   }
 }
 */
 
-//funções dimer
+// funções dimer
 
-void verificaEstadoDoDimer() {
+void verificaEstadoDoDimer()
+{
   estadoDimer = Firebase.getInt("/ControleDeDados/dimer/porcentagemDeIluminacao");
-  if(estadoDimer >= 1) {
+  if (estadoDimer >= 1)
+  {
     digitalWrite(led, 1);
-  } else {
+  }
+  else
+  {
     digitalWrite(led, 0);
   }
 }
 
-
-//funções esteira
+// funções esteira
 /*
 void verificaEstadoDaEsteira() {
   estadoEsteira = Firebase.getInt("/ControleDeDados/esteira/ligadoDesligado");
@@ -142,15 +147,15 @@ void requisicaoClient() {
 }
 */
 
-//função delay
+// função delay
 /*
 void meuDelay(int delay) {
   tempoAnterior = millis();
-  
+
   tempoAtual = tempoAnterior;
-  
-  while (tempoAtual - tempoAnterior < delay) { 
-  	tempoAtual = millis();
+
+  while (tempoAtual - tempoAnterior < delay) {
+    tempoAtual = millis();
 
     //verificações e interrupção ar condicionado
     verificaTemperaturaDoArCondicionado();

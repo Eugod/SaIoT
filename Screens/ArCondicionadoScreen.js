@@ -26,7 +26,7 @@ export default function ArCondicionadoScreen() {
   }, []);
 
   useEffect(() => {
-    firebase.database().ref('ControleDeDados/arCondicionado/').update({'consumo': calculaConsumo(1690, horasDeUso).toFixed(2)});
+    firebase.database().ref('ControleDeDados/arCondicionado/').update({ 'consumo': calculaConsumo(1690, horasDeUso).toFixed(2) });
   }, [horasDeUso]);
 
   const carregarInfo = () => {

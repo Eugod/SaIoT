@@ -1,7 +1,7 @@
 export function calculaConsumo(potencia, horas) {
     let resultado;
 
-    if(horas <= 1) {
+    if (horas <= 1) {
         resultado = (potencia / 1000) * 1;
 
         return resultado;

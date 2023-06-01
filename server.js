@@ -15,6 +15,10 @@ const dbRefArCondicionado = db.ref('ControleDeDados/arCondicionado');
 let intervalIdArCondicionado = null;
 let horasDeUso = 0;
 
+dbRefArCondicionado.update({
+  horasDeUso
+});
+
 // Variáveis da esteira
 let intervalIdEsteira = null;
 let minutosDeUsoDiario = 0;
@@ -22,32 +26,39 @@ let horasDeUsoDiario = 0;
 let minutosDeUsoTotal = 0;
 let horasDeUsoTotal = 0;
 
+dbRefEsteira.update({
+  minutosDeUsoDiario,
+  horasDeUsoDiario,
+});
+
+// Rota para iniciar a contagem de tempo do ar condicionado
 app.post('/timer/iniciar', (req, res) => {
-    if (!intervalIdArCondicionado) {
-      intervalIdArCondicionado = setInterval(() => {
-        horasDeUso ++;
-  
-        dbRefArCondicionado.update({
-          horasDeUso
-        });
-      }, 5000);
-  
-      return res.sendStatus(200);
-    } else {
-      return res.status(400).send('A contagem de tempo já está em andamento.');
-    }
-  });
-  
-  app.post('/timer/parar', (req, res) => {
-    if (intervalIdArCondicionado) {
-      clearInterval(intervalIdArCondicionado);
-      intervalIdArCondicionado = null;
-  
-      return res.sendStatus(200);
-    } else {
-      return res.status(400).send('A contagem de tempo ainda não foi iniciada.');
-    }
-  });
+  if (!intervalIdArCondicionado) {
+    intervalIdArCondicionado = setInterval(() => {
+      horasDeUso++;
+
+      dbRefArCondicionado.update({
+        horasDeUso
+      });
+    }, 5000);
+
+    return res.sendStatus(200);
+  } else {
+    return res.status(400).send('A contagem de tempo já está em andamento.');
+  }
+});
+
+// Rota para parar a contagem de tempo do ar condicionado
+app.post('/timer/parar', (req, res) => {
+  if (intervalIdArCondicionado) {
+    clearInterval(intervalIdArCondicionado);
+    intervalIdArCondicionado = null;
+
+    return res.sendStatus(200);
+  } else {
+    return res.status(400).send('A contagem de tempo ainda não foi iniciada.');
+  }
+});
 
 // Rota para iniciar a contagem de tempo da esteira
 app.post('/timer/start', async (req, res) => {

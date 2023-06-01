@@ -31,7 +31,7 @@ export default function EsteiraScreen() {
   }, []);
 
   useEffect(() => {
-    firebase.database().ref('ControleDeDados/esteira/').update({'consumo': calculaConsumo(14920, horasDeUsoDiario).toFixed(2)});
+    firebase.database().ref('ControleDeDados/esteira/').update({ 'consumo': calculaConsumo(14920, horasDeUsoDiario).toFixed(2) });
   }, [horasDeUsoDiario]);
 
   const carregarInfo = () => {
