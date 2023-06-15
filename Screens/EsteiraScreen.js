@@ -10,6 +10,8 @@ import { calculaConsumo } from '../Assets/funcaoCalculaConsumo';
 
 import fetch from 'cross-fetch';
 
+let localTunnelUrl;
+
 let esp32Ip;
 
 export default function EsteiraScreen() {
@@ -27,6 +29,7 @@ export default function EsteiraScreen() {
 
   useEffect(() => {
     carregarInfo();
+    carregarUrlTunnel()
     carregarIp();
   }, []);
 
@@ -53,6 +56,16 @@ export default function EsteiraScreen() {
       });
   };
 
+  const carregarUrlTunnel = () => {
+    firebase
+      .database()
+      .ref('LocalTunnel/localtunnelURL/')
+      .on('value', (snapshot) => {
+        localTunnelUrl = snapshot.val();
+        console.log(localTunnelUrl);
+      })
+  };
+
   const carregarIp = () => {
     firebase
       .database()
@@ -76,7 +89,7 @@ export default function EsteiraScreen() {
 
   const iniciarTimer = async () => {
     try {
-      await fetch('http://10.0.1.153:3000/timer/start', {
+      await fetch(`${localTunnelUrl}/timer/start`, {
         method: 'POST',
       });
     } catch (error) {
@@ -86,7 +99,7 @@ export default function EsteiraScreen() {
 
   const pararTimer = async () => {
     try {
-      await fetch('http://10.0.1.153:3000/timer/stop', {
+      await fetch(`${localTunnelUrl}/timer/stop`, {
         method: 'POST',
       });
     } catch (error) {

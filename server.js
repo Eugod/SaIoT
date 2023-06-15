@@ -1,5 +1,6 @@
 const express = require('express');
 const admin = require('./firebaseServer');
+const localtunnel = require('localtunnel');
 
 const app = express();
 const port = 3000;
@@ -105,6 +106,27 @@ app.post('/timer/stop', (req, res) => {
     res.sendStatus(400).send('A contagem de tempo ainda não foi iniciada.');
   }
 });
+
+// Iniciar o túnel com LocalTunnel e redirecionar para o servidor Express
+(async () => {
+  try {
+    const tunnel = await localtunnel({ port });
+    const localtunnelURL = tunnel.url;
+    console.log(`Túnel LocalTunnel iniciado: ${localtunnelURL}`);
+
+    // Armazenar a URL do LocalTunnel no Firebase
+    db.ref('LocalTunnel').update({
+      localtunnelURL
+    }).then(() => {
+      console.log('URL do LocalTunnel salva no Firebase');
+    }).catch(error => {
+      console.error('Erro ao salvar a URL no Firebase:', error);
+    });
+
+  } catch (error) {
+    console.error('Erro ao iniciar o túnel LocalTunnel:', error);
+  }
+})();
 
 app.listen(port, () => {
   console.log(`Servidor iniciado na porta ${port}`);

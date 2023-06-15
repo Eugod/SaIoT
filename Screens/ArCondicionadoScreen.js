@@ -8,6 +8,8 @@ import * as firebase from 'firebase';
 
 import { calculaConsumo } from '../Assets/funcaoCalculaConsumo';
 
+let localTunnelUrl;
+
 export default function ArCondicionadoScreen() {
   const [consumo, setConsumo] = useState();
 
@@ -23,6 +25,7 @@ export default function ArCondicionadoScreen() {
 
   useEffect(() => {
     carregarInfo();
+    carregarUrlTunnel();
   }, []);
 
   useEffect(() => {
@@ -45,6 +48,16 @@ export default function ArCondicionadoScreen() {
         setConsumo(informacao[0].consumo);
         setFlagLigaDesliga(informacao[0].ligadoDesligado);
       });
+  };
+
+  const carregarUrlTunnel = () => {
+    firebase
+      .database()
+      .ref('LocalTunnel/localtunnelURL/')
+      .on('value', (snapshot) => {
+        localTunnelUrl = snapshot.val();
+        console.log(localTunnelUrl);
+      })
   };
 
   const aumentaTemperatura = () => {
@@ -73,7 +86,7 @@ export default function ArCondicionadoScreen() {
 
   const iniciarTimer = async () => {
     try {
-      await fetch('http://10.0.1.153:3000/timer/iniciar', {
+      await fetch(`${localTunnelUrl}/timer/iniciar`, {
         method: 'POST',
       });
     } catch (error) {
@@ -83,7 +96,7 @@ export default function ArCondicionadoScreen() {
 
   const pararTimer = async () => {
     try {
-      await fetch('http://10.0.1.153:3000/timer/parar', {
+      await fetch(`${localTunnelUrl}/timer/parar`, {
         method: 'POST',
       });
     } catch (error) {
